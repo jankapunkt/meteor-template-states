@@ -1,24 +1,53 @@
-Blaze.TemplateInstance.prototype.state = function(key, value) {
-  if (!key) return;
-  var tpl = this || {};
-  if (typeof value === 'undefined') {
-    return tpl[key] && tpl[key].get && tpl[key].get();
-  } else {
-    if (tpl[key]) {
-      tpl[key].set(value);
-    } else {
-      tpl[key] = new ReactiveVar(value);
-      var tplName = tpl.view.name.split('.').splice(1).join('.');
-      attachTemplateHelper(tplName, key);
-    }
-  }
-}
+import {Blaze} from 'meteor/blaze';
+import {Template} from 'meteor/templating';
+import {ReactiveDict} from 'meteor/reactive-dict';
 
-var attachTemplateHelper = function(tplName, key) {
-  var helpers = {};
-  helpers[key] = function() {
-    var tpl = Template.instance() || {};
-    return tpl[key] && tpl[key].get && tpl[key].get();
-  }
-  Template[tplName].helpers(helpers);
-}
+/**
+ * Global setter
+ * @param key by which the variable should be stored
+ * @param value value to be stored
+ * @returns {*} Returns null if no instance or instance.state is present, otherwise returns true if value has been
+ *     stored.
+ */
+Template.setState = function (key, value) {
+	const instance = Template.instance();
+	console.log("set state", key, value, instance);
+	if (!instance || !instance.state) return null;
+	instance.state.set(key, value);
+	return true;
+};
+
+/**
+ * Global getter
+ * @param key access key
+ * @returns {null} Returns the variable by key or null;
+ */
+Template.getState = function (key) {
+	const instance = Template.instance();
+	console.log("set state", key, instance);
+	return instance && instance.state
+		? instance.state.get(key)
+		: null;
+};
+
+
+/**
+ * Hook into onCreated and create helpers
+ */
+(function (onCreated) {
+	Template.prototype.onCreated = function (cb) {
+		const instance = this;
+		//instance.state = new ReactiveDict();
+		//console.log("on created: ", instance.viewName, instance);
+		instance.__helpers.set("state", function (key) {
+			return Template.getState(key);
+		})
+		onCreated.call(instance, cb);
+	};
+})(Template.prototype.onCreated);
+
+
+/**
+ * Hook into template instance and create state
+ */
+Blaze.TemplateInstance.prototype.state = new ReactiveDict();
