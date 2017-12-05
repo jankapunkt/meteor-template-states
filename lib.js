@@ -11,7 +11,6 @@ import {ReactiveDict} from 'meteor/reactive-dict';
  */
 Template.setState = function (key, value) {
 	const instance = Template.instance();
-	console.log("set state", key, value, instance);
 	if (!instance || !instance.state) return null;
 	instance.state.set(key, value);
 	return true;
@@ -24,7 +23,6 @@ Template.setState = function (key, value) {
  */
 Template.getState = function (key) {
 	const instance = Template.instance();
-	console.log("set state", key, instance);
 	return instance && instance.state
 		? instance.state.get(key)
 		: null;
