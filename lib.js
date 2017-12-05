@@ -49,3 +49,9 @@ Template.getState = function (key) {
  * Hook into template instance and create state
  */
 Blaze.TemplateInstance.prototype.state = new ReactiveDict();
+
+
+Blaze.TemplateInstance.prototype.toggle = function(key){
+	const currentValue = this.state.get(key);
+	this.state.set(key, !currentValue);
+};
