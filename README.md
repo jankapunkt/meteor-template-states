@@ -27,10 +27,11 @@ meteor add jkuester:template-states
 
 ### Use with TemplateInstance
 
+##### set / get
 
 `instance.state.set(key, value)` - Sets a template state variable by key.
 
-`instance.state.get(key)` - Gets a template state variable by key.    
+`instance.state.get(key)` - Gets a template state variable by key.
 
 ##### Example
 
@@ -56,6 +57,12 @@ Template.post.events({
  	}
 })
 ```  
+
+##### toggle
+
+`instance.toggle(key)` - Toggles a boolean key between `false` and `true` (switches `value` to `!value`).
+
+Note: if you apply this on non-boolean state variables, they become boolean.
 
 
 ### Use with Template

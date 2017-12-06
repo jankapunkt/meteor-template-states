@@ -2,7 +2,7 @@ Package.describe({
 	name: 'jkuester:template-states',
 	summary: 'Template states for Blaze',
 	git: 'https://github.com/gwendall/meteor-template-states.git',
-	version: '0.2.0'
+	version: '0.2.1'
 });
 
 Package.onUse(function (api, where) {

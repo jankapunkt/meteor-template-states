@@ -47,6 +47,18 @@ describe("extensions/TemplateExtensions", function () {
 		assert.equal(templateInstance.state.get(expectedVar), expectedValue);
 	});
 
+	it("toggles variables on TemplateIntance", function () {
+		const setGetView = createView("setGetTest");
+		const templateInstance = setGetView.templateInstance();
+		const expectedVar = "expected";
+		const expectedValue = false;
+		templateInstance.state.set(expectedVar, expectedValue);
+		assert.equal(templateInstance.state.get(expectedVar), expectedValue);
+
+		templateInstance.toggle(expectedVar);
+		assert.equal(templateInstance.state.get(expectedVar), !expectedValue);
+	});
+
 	it("has a state helper to be accessed via Spacebars", function (done) {
 		const spacebarsHelperView = createView("spacebarsHelperView", function () {
 			const instance = this;
