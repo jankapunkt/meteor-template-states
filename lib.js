@@ -1,6 +1,7 @@
-import {Blaze} from 'meteor/blaze';
-import {Template} from 'meteor/templating';
-import {ReactiveDict} from 'meteor/reactive-dict';
+import { Blaze } from 'meteor/blaze';
+import { Template } from 'meteor/templating';
+import { ReactiveDict } from 'meteor/reactive-dict';
+import { Random } from 'meteor/random';
 
 /**
  * Global setter
@@ -39,7 +40,7 @@ Template.getState = function (key) {
 		//console.log("on created: ", instance.viewName, instance);
 		instance.__helpers.set("state", function (key) {
 			return Template.getState(key);
-		})
+		});
 		onCreated.call(instance, cb);
 	};
 })(Template.prototype.onCreated);
@@ -50,8 +51,11 @@ Template.getState = function (key) {
  */
 Blaze.TemplateInstance.prototype.state = new ReactiveDict();
 
-
-Blaze.TemplateInstance.prototype.toggle = function(key){
+/**
+ * Toggles a boolean variables, default state is false.
+ * @param key
+ */
+Blaze.TemplateInstance.prototype.toggle = function (key) {
 	const currentValue = this.state.get(key);
 	this.state.set(key, !currentValue);
 };

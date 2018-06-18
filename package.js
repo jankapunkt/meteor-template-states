@@ -8,6 +8,7 @@ Package.describe({
 Package.onUse(function (api, where) {
 	api.versionsFrom('1.5');
 	api.use('ecmascript');
+	api.use('random');
 	api.use([
 		'blaze@2.3.2',
 		'reactive-dict@1.2.0',
@@ -21,6 +22,7 @@ Package.onUse(function (api, where) {
 
 Package.onTest(function (api) {
 	api.use([
+		'random',
 		'ecmascript',
 		'practicalmeteor:chai',
 		'practicalmeteor:mocha',
