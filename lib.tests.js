@@ -11,50 +11,102 @@ describe('extensions/TemplateExtensions', function () {
    * @param helpers Helpers definitions
    * @return {Blaze.view} A constructed blaze Template view
    */
-  const createView = function (name, onCreated, helpers) {
-    const myTemplate = Blaze.Template(name, function () {
-      return true
+  const createView = function ({ name, onCreated, helpers }) {
+    const template = Blaze.Template(name, function () {
+      return null
     })
 
-    if (helpers) myTemplate.helpers(helpers)
-    if (onCreated) myTemplate.onCreated(onCreated)
-
-    const view = Template.prototype.constructView.call(myTemplate)
-    const template = view.template
-
+    if (helpers) {
+      template.helpers(helpers)
+    }
     if (onCreated) {
-      const created = template._callbacks.created
-      for (let cb of created) {
-        cb.call(myTemplate)
-      }
+      template.onCreated(onCreated)
     }
 
+    const view = template.constructView()
+    view._render()
+    Blaze.render(template, global.$('<div></div>').get(0))
     return view
   }
 
-  it('has attached getState and setState to Template', function () {
-    assert.isDefined(Template.getState)
-    assert.equal(typeof Template.getState, 'function')
-    assert.isDefined(Template.setState)
-    assert.equal(typeof Template.setState, 'function')
+  describe(Template.setState.name, function () {
+
+    it('is defined on Template', function () {
+      assert.isDefined(Template.getState)
+      assert.equal(typeof Template.getState, 'function')
+    })
+
+    it('returns false if no Template / instnce exists', function () {
+      assert.isFalse(Template.setState('test', 'test'))
+    })
+
+    it('throws if key is null', function () {
+      assert.throws(function () {
+        Template.setState(null, 'test')
+      })
+    })
+
+    it('throws if key is undefined', function () {
+      assert.throws(function () {
+        Template.setState(void 0, 'test')
+      })
+    })
+
+    it('returns true if Template / instance exists / key exists and value has been set', function (done) {
+      createView({
+        name: 'setGetTest',
+        onCreated () {
+          const key = 'expected'
+          assert.isTrue(Template.setState(key, ''), 'string')
+          assert.isTrue(Template.setState(key, {}), 'object')
+          assert.isTrue(Template.setState(key, []), 'array')
+          assert.isTrue(Template.setState(key, 0), 'int')
+          assert.isTrue(Template.setState(key, 1.4), 'float')
+          assert.isTrue(Template.setState(key, () => {}), 'function')
+          done()
+        }
+      })
+    })
   })
 
-  it('has returned null on getState and setState when no Template instance exists', function () {
-    assert.isNull(Template.setState('test', 'test'))
-    assert.isNull(Template.getState('test'))
-  })
+  describe(Template.getState.name, function () {
+    it('is defined on Template', function () {
+      assert.isDefined(Template.setState)
+      assert.equal(typeof Template.setState, 'function')
+    })
 
-  it('sets and gets variables on TemplateIntance', function () {
-    const setGetView = createView('setGetTest')
-    const templateInstance = setGetView.templateInstance()
-    const expectedVar = 'expected'
-    const expectedValue = 'value'
-    templateInstance.state.set(expectedVar, expectedValue)
-    assert.equal(templateInstance.state.get(expectedVar), expectedValue)
+    it('returns undefined if no Template / instnce exists', function () {
+      assert.isUndefined(Template.getState('test'))
+    })
+
+    it('throws if key is undefined', function () {
+      assert.throws(function () {
+        Template.getState(void 0)
+      })
+    })
+
+    it('throws if key is null', function () {
+      assert.throws(function () {
+        Template.getState(null)
+      })
+    })
+
+    it('returns true if Template / instance exists / key exists and value has been set', function (done) {
+      createView({
+        name: 'setGetTest',
+        onCreated () {
+          const expectedVar = 'expected'
+          const expectedValue = 'value'
+          this.state.set(expectedVar, expectedValue)
+          assert.equal(Template.getState(expectedVar), expectedValue)
+          done()
+        }
+      })
+    })
   })
 
   it('toggles variables on TemplateIntance', function () {
-    const setGetView = createView('setGetTest')
+    const setGetView = createView({ name: 'setGetTest' })
     const templateInstance = setGetView.templateInstance()
     const expectedVar = 'expected'
     const expectedValue = false
@@ -66,22 +118,16 @@ describe('extensions/TemplateExtensions', function () {
   })
 
   it('has a state helper to be accessed via Spacebars', function (done) {
-    const spacebarsHelperView = createView('spacebarsHelperView', function () {
-      // instance is required here
-      // eslint-disable-next-line
-      const instance = this
-    }, {
-      set: function set (key, value) {
-        Template.setState(key, value)
+    const spacebarsHelperView = createView({
+      name: 'spacebarsHelperView',
+      onCreated: function () {
+        // we need this to get access to the helpers Template.instance()
+        // eslint-disable-next-line
+        const instance = this
       }
     })
-
-    console.log('view:', spacebarsHelperView, spacebarsHelperView.templateInstance())
-
     const template = spacebarsHelperView.template
-    const setHelper = template.__helpers.get('set')
     const stateHelper = template.__helpers.get('state')
-    assert.isDefined(setHelper)
     assert.isDefined(stateHelper)
     done()
   })
