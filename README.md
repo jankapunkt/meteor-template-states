@@ -1,15 +1,16 @@
-
-
 # Meteor Template States
+[![Build Status](https://travis-ci.org/jankapunkt/meteor-template-states.svg?branch=master)](https://travis-ci.org/jankapunkt/meteor-template-states)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 Template states for Blaze. Forked from [gwendall:template-states](https://github.com/gwendall/meteor-template-states).
 
-## Goals and differences to gwendall:template-states
+## Features and differences to gwendall:template-states
 
-Goals are
-* to provide state access across all Templates in the same easy way like the original
+Features
+* provide state access across all Templates in the same easy way like the original
 * let the developer decide about the helper access
-* Small, clean and tested codebase
+* Minimalistic, clean and tested codebase
 
 Differences are
 * The state object is a directly references `ReactiveDict`, which is why access is determined by the ReactiveDict API (set/get).
@@ -71,7 +72,7 @@ Note: if you apply this on non-boolean state variables, they become boolean.
 
 `Template.getState(key)` - Returns the state on the current Template's instance.
 
-Note: This calls `Template.instance()` and returns the current instance's state.
+Note: This calls `Template.instance()` and accesses the current instance's state.
 
 
 ##### Example
