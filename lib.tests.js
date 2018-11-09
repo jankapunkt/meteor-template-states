@@ -2,15 +2,14 @@
 import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
 import { assert } from 'meteor/practicalmeteor:chai'
-//import 'meteor/jkuester:template-states'
 
 describe('extensions/TemplateExtensions', function () {
   /**
    * Testhelper to construct a view and callback onCreated
-   * @param name
-   * @param onCreated
-   * @param helpers
-   * @return {*}
+   * @param name Name of the view to be constructed
+   * @param onCreated Callback to run after view has been constructed
+   * @param helpers Helpers definitions
+   * @return {Blaze.view} A constructed blaze Template view
    */
   const createView = function (name, onCreated, helpers) {
     const myTemplate = Blaze.Template(name, function () {
@@ -68,6 +67,8 @@ describe('extensions/TemplateExtensions', function () {
 
   it('has a state helper to be accessed via Spacebars', function (done) {
     const spacebarsHelperView = createView('spacebarsHelperView', function () {
+      // instance is required here
+      // eslint-disable-next-line
       const instance = this
     }, {
       set: function set (key, value) {

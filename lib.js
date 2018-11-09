@@ -3,11 +3,11 @@ import { Template } from 'meteor/templating'
 import { ReactiveDict } from 'meteor/reactive-dict'
 
 /**
- * Global setter
- * @param key by which the variable should be stored
- * @param value value to be stored
- * @returns {*} Returns null if no instance or instance.state is present, otherwise returns true if value has been
- *     stored.
+ * Shortcut for Template.instance().state.set
+ * @param key The key by which the variable should be stored
+ * @param value The value to be stored
+ * @returns {Boolean} Returns false if no instance or instance.state is present,
+ * otherwise returns true after value has been stored.
  */
 Template.setState = function setState (key, value) {
   const instance = Template.instance()
@@ -17,9 +17,9 @@ Template.setState = function setState (key, value) {
 }
 
 /**
- * Global getter
+ * Shortcut for Template.instance().state.get
  * @param key access key
- * @returns {null} Returns the variable by key or null;
+ * @returns {*|null} Returns either the value obtained by key or null
  */
 Template.getState = function getState (key) {
   const instance = Template.instance()
@@ -51,7 +51,7 @@ Blaze.TemplateInstance.prototype.state = new ReactiveDict()
 
 /**
  * Toggles a boolean variables, default state is false.
- * @param key
+ * @param key The name of the state variable to be toggled
  */
 Blaze.TemplateInstance.prototype.toggle = function toggle (key) {
   const currentValue = this.state.get(key)
