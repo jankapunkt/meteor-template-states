@@ -17,6 +17,13 @@ Differences are
 * There is not a helper created for every variable, that is pushed/removed to the state. Accessing via SpaceBars acts through the `state` helper (see examples). There are some cases, where you might not directly access the variable but name a helper just like the variable but process the value before returning it (e.g. decoration, proxy object etc.).
 * There is a shortcut for `Template.instance().state.<get/set>` to be accessed in helpers.
 
+## Changelog
+
+**0.2.2**
+
+* Tests / coverage improved
+* Template.toggle added (in addition to instance.toggle)
+* refactored code style to standardjs
 
 ## Installation  
 
