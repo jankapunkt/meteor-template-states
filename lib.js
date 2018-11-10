@@ -68,3 +68,15 @@ Blaze.TemplateInstance.prototype.toggle = function toggle (key) {
   const currentValue = this.state.get(key)
   this.state.set(key, !currentValue)
 }
+
+/**
+ * Toggles a boolean variables, default state is false.
+ * @param key The name of the state variable to be toggled
+ * @throws Key missing error when key is undefined
+ */
+Template.toggle = function toggle (key) {
+  const instance = Template.instance()
+  if (instance) {
+    instance.toggle(key)
+  }
+}
