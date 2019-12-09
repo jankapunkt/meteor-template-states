@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
 import { assert } from 'meteor/practicalmeteor:chai'
 import { Random } from 'meteor/random'
-
+console.log(Blaze)
 describe('extensions/TemplateExtensions', function () {
   /**
    * Testhelper to construct a view and callback onCreated
@@ -31,6 +31,61 @@ describe('extensions/TemplateExtensions', function () {
   }
   
   const rand = () => Random.id()
+
+  describe('state property', function () {
+    it ('is defined on a new instance', function (done) {
+      createView({
+        name: 'stateTest',
+        onCreated () {
+          const instance = this
+          console.log('test', instance)
+          assert.isDefined(instance.state)
+          assert.equal(instance.state.constructor.name, 'ReactiveDict')
+          done()
+        }
+      })
+    })
+
+    it ('is a new ReactiveDict instance for every new Template instance', function (done) {
+      createView({
+        name: 'destroyTest',
+        onCreated () {
+          const instance = this
+          assert.isDefined(instance.state)
+          assert.equal(instance.state.constructor.name, 'ReactiveDict')
+          instance.state.set('foo', 'barbaz')
+
+          createView({
+            name: 'destroyTest',
+            onCreated () {
+              const instance = this
+              assert.isDefined(instance.state)
+              assert.equal(instance.state.constructor.name, 'ReactiveDict')
+              assert.isUndefined(instance.state.get('foo'))
+              done()
+            }
+          })
+        }
+      })
+    })
+  })
+
+  describe('Spacebars', function () {
+    it('has a state helper to be accessed via Spacebars', function (done) {
+      const spacebarsHelperView = createView({
+        name: 'spacebarsHelperView',
+        onCreated: function () {
+          // we need this to get access to the helpers Template.instance()
+          // eslint-disable-next-line
+          const instance = this
+        }
+      })
+      const template = spacebarsHelperView.template
+      const stateHelper = template.__helpers.get('state')
+      assert.isDefined(stateHelper)
+      done()
+    })
+  })
 
   describe(Template.setState.name, function () {
 
@@ -161,23 +216,6 @@ describe('extensions/TemplateExtensions', function () {
           done()
         }
       })
-    })
-  })
-
-  describe('Spacebars', function () {
-    it('has a state helper to be accessed via Spacebars', function (done) {
-      const spacebarsHelperView = createView({
-        name: 'spacebarsHelperView',
-        onCreated: function () {
-          // we need this to get access to the helpers Template.instance()
-          // eslint-disable-next-line
-          const instance = this
-        }
-      })
-      const template = spacebarsHelperView.template
-      const stateHelper = template.__helpers.get('state')
-      assert.isDefined(stateHelper)
-      done()
     })
   })
 
