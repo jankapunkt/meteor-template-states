@@ -29,11 +29,11 @@ describe('extensions/TemplateExtensions', function () {
     Blaze.render(template, global.$('<div></div>').get(0))
     return view
   }
-  
+
   const rand = () => Random.id()
 
   describe('state property', function () {
-    it ('is defined on a new instance', function (done) {
+    it('is defined on a new instance', function (done) {
       createView({
         name: 'stateTest',
         onCreated () {
@@ -46,7 +46,7 @@ describe('extensions/TemplateExtensions', function () {
       })
     })
 
-    it ('is a new ReactiveDict instance for every new Template instance', function (done) {
+    it('is a new ReactiveDict instance for every new Template instance', function (done) {
       createView({
         name: 'destroyTest',
         onCreated () {
@@ -88,7 +88,6 @@ describe('extensions/TemplateExtensions', function () {
   })
 
   describe(Template.setState.name, function () {
-
     it('is defined on Template', function () {
       assert.isDefined(Template.getState)
       assert.equal(typeof Template.getState, 'function')
@@ -106,7 +105,7 @@ describe('extensions/TemplateExtensions', function () {
 
     it('throws if key is undefined', function () {
       assert.throws(function () {
-        Template.setState(void 0, rand())
+        Template.setState(undefined, rand())
       })
     })
 
@@ -139,7 +138,7 @@ describe('extensions/TemplateExtensions', function () {
 
     it('throws if key is undefined', function () {
       assert.throws(function () {
-        Template.getState(void 0)
+        Template.getState(undefined)
       })
     })
 
@@ -199,7 +198,7 @@ describe('extensions/TemplateExtensions', function () {
         name: 'toggleTest',
         onCreated () {
           assert.throws(function () {
-            Template.toggle(void 0)
+            Template.toggle(undefined)
           })
           done()
         }
@@ -218,5 +217,4 @@ describe('extensions/TemplateExtensions', function () {
       })
     })
   })
-
 })

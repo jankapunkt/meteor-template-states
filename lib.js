@@ -63,7 +63,6 @@ Object.defineProperty(Template, 'getState', {
   }
 })(Template.prototype.onCreated)
 
-
 /**
  * Create a new Reactive dict on every new view creation
  */
