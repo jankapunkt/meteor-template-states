@@ -6,6 +6,26 @@ import { check, Match } from 'meteor/check'
 const isDefined = x => typeof x !== 'undefined' && x !== null
 
 /**
+ * Sets the current state. Shortcut to instance.state.set
+ * @param key {String} the key or object to set the reactive dict
+ * @param value {*} Anything
+ * @return {*}
+ */
+Blaze.TemplateInstance.prototype.setState = function (key, value) {
+  this.state.set(key, value)
+  return true
+}
+
+/**
+ * Gets a property from the current state.
+ * @param key {String} the key to the state property.
+ * @return {*}
+ */
+Blaze.TemplateInstance.prototype.getState = function (key) {
+  return this.state.get(key)
+}
+
+/**
  * Shortcut for Template.instance().state.set
  * @param key The key by which the variable should be stored
  * @param value The value to be stored
@@ -17,11 +37,9 @@ const isDefined = x => typeof x !== 'undefined' && x !== null
 function setState (key, value) {
   check(key, Match.Where(isDefined))
   const instance = Template.instance()
-  if (!instance || !instance.state) {
-    return false
-  }
-  instance.state.set(key, value)
-  return true
+  return instance
+    ? instance.setState(key, value)
+    : false
 }
 
 Object.defineProperty(Template, 'setState', {
@@ -39,8 +57,8 @@ Object.defineProperty(Template, 'setState', {
 function getState (key) {
   check(key, Match.Where(isDefined))
   const instance = Template.instance()
-  if (instance && instance.state) {
-    return instance.state.get(key)
+  if (instance) {
+    return instance.getState(key)
   }
 }
 

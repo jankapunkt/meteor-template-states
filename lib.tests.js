@@ -3,7 +3,6 @@ import { Template } from 'meteor/templating'
 import { Blaze } from 'meteor/blaze'
 import { assert } from 'meteor/practicalmeteor:chai'
 import { Random } from 'meteor/random'
-console.log(Blaze)
 describe('extensions/TemplateExtensions', function () {
   /**
    * Testhelper to construct a view and callback onCreated
@@ -38,7 +37,6 @@ describe('extensions/TemplateExtensions', function () {
         name: 'stateTest',
         onCreated () {
           const instance = this
-          console.log('test', instance)
           assert.isDefined(instance.state)
           assert.equal(instance.state.constructor.name, 'ReactiveDict')
           done()
@@ -128,12 +126,13 @@ describe('extensions/TemplateExtensions', function () {
 
   describe(Template.getState.name, function () {
     it('is defined on Template', function () {
-      assert.isDefined(Template.setState)
-      assert.equal(typeof Template.setState, 'function')
+      assert.isDefined(Template.getState)
+      assert.equal(typeof Template.getState, 'function')
     })
 
-    it('returns undefined if no Template / instnce exists', function () {
-      assert.isUndefined(Template.getState(rand()))
+    it('returns undefined if no Template / instance exists', function () {
+      const val = Template.getState(rand())
+      assert.isUndefined(val)
     })
 
     it('throws if key is undefined', function () {
