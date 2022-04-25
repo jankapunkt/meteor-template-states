@@ -4,6 +4,21 @@ import { ReactiveDict } from 'meteor/reactive-dict'
 import { check, Match } from 'meteor/check'
 
 const isDefined = x => typeof x !== 'undefined' && x !== null
+let stateName = 'state'
+
+/**
+ * Changes the default name of the ReactiveDict, that holds the state
+ * @param value
+ * @returns {string}
+ */
+Template.stateName = value => {
+  if (typeof value !== 'string' || value in Object) {
+    throw new Error(`State name ${value} is not allowed.`)
+  }
+
+  stateName = value
+  return stateName
+}
 
 /**
  * Sets the current state. Shortcut to instance.state.set
@@ -12,7 +27,7 @@ const isDefined = x => typeof x !== 'undefined' && x !== null
  * @return {*}
  */
 Blaze.TemplateInstance.prototype.setState = function (key, value) {
-  this.state.set(key, value)
+  this[stateName].set(key, value)
   return true
 }
 
@@ -22,7 +37,7 @@ Blaze.TemplateInstance.prototype.setState = function (key, value) {
  * @return {*}
  */
 Blaze.TemplateInstance.prototype.getState = function (key) {
-  return this.state.get(key)
+  return this[stateName].get(key)
 }
 
 /**
@@ -90,7 +105,7 @@ Object.defineProperty(Template, 'getState', {
     const view = this
     if (view.templateInstance) {
       const instance = view.templateInstance()
-      instance.state = instance.state || new ReactiveDict()
+      instance[stateName] = instance[stateName] || new ReactiveDict()
     }
     onCreated.call(view, cb)
   }
@@ -103,8 +118,8 @@ Object.defineProperty(Template, 'getState', {
  */
 Blaze.TemplateInstance.prototype.toggle = function toggle (key) {
   check(key, Match.Where(isDefined))
-  const currentValue = this.state.get(key)
-  this.state.set(key, !currentValue)
+  const currentValue = this[stateName].get(key)
+  this[stateName].set(key, !currentValue)
 }
 
 /**
