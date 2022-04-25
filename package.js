@@ -7,13 +7,11 @@ Package.describe({
 })
 
 Package.onUse(function (api, where) {
-  api.versionsFrom('1.5')
-  api.use('ecmascript')
-  api.use('random')
   api.use([
-    'blaze@2.3.3',
-    'reactive-dict@1.3.0',
-    'templating@1.3.2'
+    'ecmascript',
+    'blaze@2.0.0',
+    'reactive-dict@1.0.0',
+    'templating@1.0.0'
   ], 'client')
 
   api.addFiles([
@@ -29,9 +27,9 @@ Package.onTest(function (api) {
     'cultofcoders:mocha'
   ])
   api.use([
-    'blaze@2.3.2',
-    'reactive-dict@1.2.0',
-    'templating@1.3.2',
+    'blaze',
+    'reactive-dict',
+    'templating',
     'jkuester:template-states'
   ], 'client')
   api.mainModule('lib.tests.js', 'client')

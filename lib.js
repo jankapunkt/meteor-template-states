@@ -88,8 +88,10 @@ Object.defineProperty(Template, 'getState', {
 ;(function (onCreated) {
   Blaze.View.prototype.onViewCreated = function (cb) {
     const view = this
-    const instance = view.templateInstance()
-    instance.state = instance.state || new ReactiveDict()
+    if (view.templateInstance) {
+      const instance = view.templateInstance()
+      instance.state = instance.state || new ReactiveDict()
+    }
     onCreated.call(view, cb)
   }
 })(Blaze.View.prototype.onViewCreated)
