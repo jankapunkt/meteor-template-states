@@ -1,0 +1,17 @@
+{
+  "name": "meteor-template-states",
+  "version": "1.0.0",
+  "description": "[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)",
+  "main": "lib.js",
+  "scripts": {
+    "lint": "node_modules/@biomejs/biome/bin/biome --write check ./*.js",
+    "test:watch": "sh ./tests.sh 4045",
+    "test:ci": "sh ./testscli.sh"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "puppeteer": "^19.11.1"
+  }
+}

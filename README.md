@@ -1,5 +1,4 @@
 # Meteor Template States
-[![Build Status](https://travis-ci.org/jankapunkt/meteor-template-states.svg?branch=master)](https://travis-ci.org/jankapunkt/meteor-template-states)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
