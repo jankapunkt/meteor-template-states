@@ -17,15 +17,11 @@ Package.onUse((api) => {
 });
 
 Package.onTest((api) => {
-  Npm.depends({
-    chai: '5.2.0',
-		puppeteer: '19.1.1',
-  })
-	api.use([
-		"random",
-		"ecmascript",
-		"meteortesting:mocha",
-	]);
+	Npm.depends({
+		chai: "5.2.0",
+		puppeteer: "19.1.1",
+	});
+	api.use(["random", "ecmascript", "meteortesting:mocha"]);
 	api.use(
 		["blaze", "reactive-dict", "templating", "jkuester:template-states"],
 		"client",
