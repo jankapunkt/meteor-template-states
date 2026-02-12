@@ -1,5 +1,5 @@
 import { Blaze } from 'meteor/blaze'
-import { Match, check } from 'meteor/check'
+import { check, Match } from 'meteor/check'
 import { ReactiveDict } from 'meteor/reactive-dict'
 import { Template } from 'meteor/templating'
 
@@ -49,7 +49,7 @@ Blaze.TemplateInstance.prototype.getState = function (key) {
  * otherwise returns true after value has been stored.
  */
 
-function setState (key, value) {
+function setState(key, value) {
   check(key, Match.Where(isDefined))
   const instance = Template.instance()
   return instance ? instance.setState(key, value) : false
@@ -57,7 +57,7 @@ function setState (key, value) {
 
 Object.defineProperty(Template, 'setState', {
   value: setState,
-  writable: false
+  writable: false,
 })
 
 /**
@@ -67,7 +67,7 @@ Object.defineProperty(Template, 'setState', {
  * @returns {*|null} Returns either the value obtained by key or null
  */
 
-function getState (key) {
+function getState(key) {
   check(key, Match.Where(isDefined))
   const instance = Template.instance()
   if (instance) {
@@ -77,23 +77,23 @@ function getState (key) {
 
 Object.defineProperty(Template, 'getState', {
   value: getState,
-  writable: false
-});
+  writable: false,
+})
 
 /**
  * Hook into Template onCreated and create helpers
  */
-((onCreated) => {
+;((onCreated) => {
   Template.prototype.onCreated = function (cb) {
     this.__helpers.set('state', (key) => Template.getState(key))
     onCreated.call(this, cb)
   }
-})(Template.prototype.onCreated);
+})(Template.prototype.onCreated)
 
 /**
  * Create a new Reactive dict on every new view creation
  */
-((onCreated) => {
+;((onCreated) => {
   Blaze.View.prototype.onViewCreated = function (cb) {
     if (this.templateInstance) {
       const instance = this.templateInstance()
@@ -108,7 +108,7 @@ Object.defineProperty(Template, 'getState', {
  * @param key The name of the state variable to be toggled
  * @throws Key missing error when key is undefined
  */
-Blaze.TemplateInstance.prototype.toggle = function toggle (key) {
+Blaze.TemplateInstance.prototype.toggle = function toggle(key) {
   check(key, Match.Where(isDefined))
   const currentValue = this[stateName].get(key)
   this[stateName].set(key, !currentValue)
@@ -119,7 +119,7 @@ Blaze.TemplateInstance.prototype.toggle = function toggle (key) {
  * @param key The name of the state variable to be toggled
  * @throws Key missing error when key is undefined
  */
-Template.toggle = function toggle (key) {
+Template.toggle = function toggle(key) {
   const instance = Template.instance()
   if (instance) {
     instance.toggle(key)

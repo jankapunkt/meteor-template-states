@@ -1,0 +1,18 @@
+{
+  "name": "test-proxy",
+  "private": true,
+  "scripts": {
+    "lint": "node_modules/@biomejs/biome/bin/biome check --write  ../*.js",
+    "test:watch": "sh ./tests.sh 4045",
+    "test:ci": "sh ./testscli.sh"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.23.5",
+    "meteor-node-stubs": "^1.2.12"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.15",
+    "chai": "^6.2.2",
+    "puppeteer": "^24.37.2"
+  }
+}

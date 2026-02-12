@@ -1,11 +1,13 @@
-import { assert } from 'meteor/practicalmeteor:chai'
+/* eslint-env mocha */
+
+import { assert } from 'chai'
 import { Blaze } from 'meteor/blaze'
 import { Random } from 'meteor/random'
-/* eslint-env mocha */
 import { Template } from 'meteor/templating'
+
 describe('extensions/TemplateExtensions', () => {
   /*
-   * Testhelper to construct a view and callback onCreated
+   * Test helper to construct a view and callback onCreated
    * @param name Name of the view to be constructed
    * @param onCreated Callback to run after view has been constructed
    * @param helpers Helpers definitions
@@ -33,32 +35,32 @@ describe('extensions/TemplateExtensions', () => {
     it('is defined on a new instance', (done) => {
       createView({
         name: 'stateTest',
-        onCreated () {
+        onCreated() {
           assert.isDefined(this.state)
           assert.equal(this.state.constructor.name, 'ReactiveDict')
           done()
-        }
+        },
       })
     })
 
     it('is a new ReactiveDict instance for every new Template instance', (done) => {
       createView({
         name: 'destroyTest',
-        onCreated () {
+        onCreated() {
           assert.isDefined(this.state)
           assert.equal(this.state.constructor.name, 'ReactiveDict')
           this.state.set('foo', 'barbaz')
 
           createView({
             name: 'destroyTest',
-            onCreated () {
+            onCreated() {
               assert.isDefined(this.state)
               assert.equal(this.state.constructor.name, 'ReactiveDict')
               assert.isUndefined(this.state.get('foo'))
               done()
-            }
+            },
           })
-        }
+        },
       })
     })
   })
@@ -67,7 +69,7 @@ describe('extensions/TemplateExtensions', () => {
     it('has a state helper to be accessed via Spacebars', (done) => {
       const spacebarsHelperView = createView({
         name: 'spacebarsHelperView',
-        onCreated: () => {}
+        onCreated: () => {},
       })
       const template = spacebarsHelperView.template
       const stateHelper = template.__helpers.get('state')
@@ -101,7 +103,7 @@ describe('extensions/TemplateExtensions', () => {
     it('returns true if Template / instance exists / key exists and value has been set', (done) => {
       createView({
         name: 'setGetTest',
-        onCreated () {
+        onCreated() {
           const key = rand()
           assert.isTrue(Template.setState(key, ''), 'string')
           assert.isTrue(Template.setState(key, {}), 'object')
@@ -110,10 +112,10 @@ describe('extensions/TemplateExtensions', () => {
           assert.isTrue(Template.setState(key, 1.4), 'float')
           assert.isTrue(
             Template.setState(key, () => {}),
-            'function'
+            'function',
           )
           done()
-        }
+        },
       })
     })
   })
@@ -144,13 +146,13 @@ describe('extensions/TemplateExtensions', () => {
     it('returns true if Template / instance exists / key exists and value has been set', (done) => {
       createView({
         name: 'setGetTest',
-        onCreated () {
+        onCreated() {
           const expectedVar = rand()
           const expectedValue = rand()
           this.state.set(expectedVar, expectedValue)
           assert.equal(Template.getState(expectedVar), expectedValue)
           done()
-        }
+        },
       })
     })
   })
@@ -159,7 +161,7 @@ describe('extensions/TemplateExtensions', () => {
     it('toggles variables on TemplateIntance', (done) => {
       createView({
         name: 'toggleTest',
-        onCreated () {
+        onCreated() {
           const key = rand()
           this.state.set(key, true)
           Template.toggle(key)
@@ -167,44 +169,44 @@ describe('extensions/TemplateExtensions', () => {
           Template.toggle(key)
           assert.isTrue(this.state.get(key))
           done()
-        }
+        },
       })
     })
 
     it('defaults to toggle a false value to true if no value exists by key', (done) => {
       createView({
         name: 'toggleTest',
-        onCreated () {
+        onCreated() {
           const key = rand()
           assert.isUndefined(this.state.get(key))
           Template.toggle(key)
           assert.isTrue(this.state.get(key))
           done()
-        }
+        },
       })
     })
 
     it('throws if key is undefined', (done) => {
       createView({
         name: 'toggleTest',
-        onCreated () {
+        onCreated() {
           assert.throws(() => {
             Template.toggle(undefined)
           })
           done()
-        }
+        },
       })
     })
 
     it('throws if key is null', (done) => {
       createView({
         name: 'toggleTest',
-        onCreated () {
+        onCreated() {
           assert.throws(() => {
             Template.toggle(null)
           })
           done()
-        }
+        },
       })
     })
   })

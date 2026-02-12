@@ -1,4 +1,6 @@
 # Meteor Template States
+
+[![built with Meteor](https://img.shields.io/badge/Meteor-package-green?logo=meteor&logoColor=white)](https://meteor.com)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
@@ -7,16 +9,26 @@ Template states for Blaze. Forked from [gwendall:template-states](https://github
 ## Features and differences to gwendall:template-states
 
 Features
+
 * provide state access across all Templates in the same easy way like the original
 * let the developer decide about the helper access
 * Minimalistic, clean and tested codebase
 
 Differences are
-* The state object is a directly references `ReactiveDict`, which is why access is determined by the ReactiveDict API (set/get).
-* There is not a helper created for every variable, that is pushed/removed to the state. Accessing via SpaceBars acts through the `state` helper (see examples). There are some cases, where you might not directly access the variable but name a helper just like the variable but process the value before returning it (e.g. decoration, proxy object etc.).
+
+* The state object is a directly references `ReactiveDict`, which is why access is determined by the ReactiveDict API (
+  set/get).
+* There is not a helper created for every variable, that is pushed/removed to the state. Accessing via SpaceBars acts
+  through the `state` helper (see examples). There are some cases, where you might not directly access the variable but
+  name a helper just like the variable but process the value before returning it (e.g. decoration, proxy object etc.).
 * There is a shortcut for `Template.instance().state.<get/set>` to be accessed in helpers.
 
 ## Changelog
+
+**1.0.0**
+
+* update to Meteor 3 and latest dependencies
+* breaking: remove Meteor < 3.x support
 
 **0.2.2**
 
@@ -24,7 +36,7 @@ Differences are
 * Template.toggle added (in addition to instance.toggle)
 * refactored code style to standardjs
 
-## Installation  
+## Installation
 
 ``` sh
 meteor add jkuester:template-states
@@ -51,7 +63,7 @@ Template.post.onCreated(function() {
 })
 ```
 
-The states are then available in your templates.  
+The states are then available in your templates.
 
 ``` javascript
 Template.post.events({
@@ -71,7 +83,6 @@ Template.post.events({
 
 Note: if you apply this on non-boolean state variables, they become boolean.
 
-
 ### Use with Template
 
 `Template.setState(key, value)` - Sets the state on the current Template's instance.
@@ -79,7 +90,6 @@ Note: if you apply this on non-boolean state variables, they become boolean.
 `Template.getState(key)` - Returns the state on the current Template's instance.
 
 Note: This calls `Template.instance()` and accesses the current instance's state.
-
 
 ##### Example
 
@@ -106,7 +116,6 @@ Template.post.helpers({
 
 ### Use with Spacebars
 
-
 Declare your states in ```onCreated``` hooks
 
 ``` javascript
@@ -115,6 +124,7 @@ Template.post.onCreated(function() {
 	instance.state.set('loading', false);
 })
 ```
+
 Then use your state variable in your html content like this:
 
 ``` html
