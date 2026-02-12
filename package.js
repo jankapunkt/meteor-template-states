@@ -6,21 +6,17 @@ Package.describe({
   version: '1.0.0'
 })
 
-Package.onUse(function (api, where) {
+Package.onUse((api, where) => {
   api.versionsFrom(['3.0.1', '3.4'])
-  api.use([
-    'ecmascript',
-    'blaze@3.0.0',
-    'reactive-dict',
-    'templating@1.4.4'
-  ], 'client')
+  api.use(
+    ['ecmascript', 'blaze@3.0.0', 'reactive-dict', 'templating@1.4.4'],
+    'client'
+  )
 
-  api.addFiles([
-    'lib.js'
-  ], 'client')
+  api.addFiles(['lib.js'], 'client')
 })
 
-Package.onTest(function (api) {
+Package.onTest((api) => {
   api.versionsFrom(['3.0.1', '3.4'])
   api.use([
     'random',
@@ -28,11 +24,9 @@ Package.onTest(function (api) {
     'practicalmeteor:chai',
     'cultofcoders:mocha'
   ])
-  api.use([
-    'blaze',
-    'reactive-dict',
-    'templating',
-    'jkuester:template-states'
-  ], 'client')
+  api.use(
+    ['blaze', 'reactive-dict', 'templating', 'jkuester:template-states'],
+    'client'
+  )
   api.mainModule('lib.tests.js', 'client')
 })

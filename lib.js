@@ -1,9 +1,9 @@
 import { Blaze } from 'meteor/blaze'
-import { Template } from 'meteor/templating'
+import { Match, check } from 'meteor/check'
 import { ReactiveDict } from 'meteor/reactive-dict'
-import { check, Match } from 'meteor/check'
+import { Template } from 'meteor/templating'
 
-const isDefined = x => typeof x !== 'undefined' && x !== null
+const isDefined = (x) => typeof x !== 'undefined' && x !== null
 let stateName = 'state'
 
 /**
@@ -11,7 +11,7 @@ let stateName = 'state'
  * @param value
  * @returns {string}
  */
-Template.stateName = value => {
+Template.stateName = (value) => {
   if (typeof value !== 'string' || value in Object) {
     throw new Error(`State name ${value} is not allowed.`)
   }
@@ -52,9 +52,7 @@ Blaze.TemplateInstance.prototype.getState = function (key) {
 function setState (key, value) {
   check(key, Match.Where(isDefined))
   const instance = Template.instance()
-  return instance
-    ? instance.setState(key, value)
-    : false
+  return instance ? instance.setState(key, value) : false
 }
 
 Object.defineProperty(Template, 'setState', {
@@ -80,34 +78,28 @@ function getState (key) {
 Object.defineProperty(Template, 'getState', {
   value: getState,
   writable: false
-})
+});
 
 /**
  * Hook into Template onCreated and create helpers
  */
-
-;(function (onCreated) {
+((onCreated) => {
   Template.prototype.onCreated = function (cb) {
-    const instance = this
-    instance.__helpers.set('state', function (key) {
-      return Template.getState(key)
-    })
-    onCreated.call(instance, cb)
+    this.__helpers.set('state', (key) => Template.getState(key))
+    onCreated.call(this, cb)
   }
-})(Template.prototype.onCreated)
+})(Template.prototype.onCreated);
 
 /**
  * Create a new Reactive dict on every new view creation
  */
-
-;(function (onCreated) {
+((onCreated) => {
   Blaze.View.prototype.onViewCreated = function (cb) {
-    const view = this
-    if (view.templateInstance) {
-      const instance = view.templateInstance()
+    if (this.templateInstance) {
+      const instance = this.templateInstance()
       instance[stateName] = instance[stateName] || new ReactiveDict()
     }
-    onCreated.call(view, cb)
+    onCreated.call(this, cb)
   }
 })(Blaze.View.prototype.onViewCreated)
 
