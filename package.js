@@ -7,7 +7,7 @@ Package.describe({
 })
 
 Package.onUse(function (api, where) {
-  api.versionsFrom(['3.0.1'])
+  api.versionsFrom(['3.0.1', '3.4'])
   api.use([
     'ecmascript',
     'blaze@3.0.0',
@@ -21,6 +21,7 @@ Package.onUse(function (api, where) {
 })
 
 Package.onTest(function (api) {
+  api.versionsFrom(['3.0.1', '3.4'])
   api.use([
     'random',
     'ecmascript',
