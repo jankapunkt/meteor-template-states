@@ -71,4 +71,4 @@ jobs:
       - run: |
           cd test-proxy
           meteor npm ci
-          meteor npm test
+          meteor npm test:once

@@ -1,7 +1,8 @@
 # Meteor Template States
 
 [![built with Meteor](https://img.shields.io/badge/Meteor-package-green?logo=meteor&logoColor=white)](https://meteor.com)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Test suite](https://github.com/jankapunkt/meteor-template-states/actions/workflows/tests.yml/badge.svg)](https://github.com/jankapunkt/meteor-template-states/actions/workflows/tests.yml)
+[![Checked with Biome](https://img.shields.io/badge/Checked_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 Template states for Blaze. Forked from [gwendall:template-states](https://github.com/gwendall/meteor-template-states).
