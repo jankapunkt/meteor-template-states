@@ -1,0 +1,20 @@
+{
+  "name": "test-proxy",
+  "private": true,
+  "scripts": {
+    "lint": "node_modules/@biomejs/biome/bin/biome check ../*.js",
+    "lint:fix": "node_modules/@biomejs/biome/bin/biome check  --write ../*.js",
+    "test:watch":"METEOR_PACKAGE_DIRS='../' TEST_BROWSER_DRIVER=puppeteer TEST_WATCH=1 meteor test-packages --driver-package meteortesting:mocha ../ --port=6776",
+    "test:browser":"METEOR_PACKAGE_DIRS='../' TEST_WATCH=1 meteor test-packages --driver-package meteortesting:mocha ../ --port=6776",
+    "test:once": "TEST_BROWSER_DRIVER=puppeteer TEST_SERVER=0 METEOR_PACKAGE_DIRS=../ meteor test-packages ../ --driver-package meteortesting:mocha --once"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.23.5",
+    "meteor-node-stubs": "^1.2.12"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.15",
+    "chai": "^6.2.2",
+    "puppeteer": "^24.37.2"
+  }
+}

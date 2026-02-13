@@ -1,9 +1,9 @@
 import { Blaze } from 'meteor/blaze'
-import { Template } from 'meteor/templating'
-import { ReactiveDict } from 'meteor/reactive-dict'
 import { check, Match } from 'meteor/check'
+import { ReactiveDict } from 'meteor/reactive-dict'
+import { Template } from 'meteor/templating'
 
-const isDefined = x => typeof x !== 'undefined' && x !== null
+const isDefined = (x) => typeof x !== 'undefined' && x !== null
 let stateName = 'state'
 
 /**
@@ -11,7 +11,7 @@ let stateName = 'state'
  * @param value
  * @returns {string}
  */
-Template.stateName = value => {
+Template.stateName = (value) => {
   if (typeof value !== 'string' || value in Object) {
     throw new Error(`State name ${value} is not allowed.`)
   }
@@ -49,17 +49,15 @@ Blaze.TemplateInstance.prototype.getState = function (key) {
  * otherwise returns true after value has been stored.
  */
 
-function setState (key, value) {
+function setState(key, value) {
   check(key, Match.Where(isDefined))
   const instance = Template.instance()
-  return instance
-    ? instance.setState(key, value)
-    : false
+  return instance ? instance.setState(key, value) : false
 }
 
 Object.defineProperty(Template, 'setState', {
   value: setState,
-  writable: false
+  writable: false,
 })
 
 /**
@@ -69,7 +67,7 @@ Object.defineProperty(Template, 'setState', {
  * @returns {*|null} Returns either the value obtained by key or null
  */
 
-function getState (key) {
+function getState(key) {
   check(key, Match.Where(isDefined))
   const instance = Template.instance()
   if (instance) {
@@ -79,35 +77,29 @@ function getState (key) {
 
 Object.defineProperty(Template, 'getState', {
   value: getState,
-  writable: false
+  writable: false,
 })
 
 /**
  * Hook into Template onCreated and create helpers
  */
-
-;(function (onCreated) {
+;((onCreated) => {
   Template.prototype.onCreated = function (cb) {
-    const instance = this
-    instance.__helpers.set('state', function (key) {
-      return Template.getState(key)
-    })
-    onCreated.call(instance, cb)
+    this.__helpers.set('state', (key) => Template.getState(key))
+    onCreated.call(this, cb)
   }
 })(Template.prototype.onCreated)
 
 /**
  * Create a new Reactive dict on every new view creation
  */
-
-;(function (onCreated) {
+;((onCreated) => {
   Blaze.View.prototype.onViewCreated = function (cb) {
-    const view = this
-    if (view.templateInstance) {
-      const instance = view.templateInstance()
+    if (this.templateInstance) {
+      const instance = this.templateInstance()
       instance[stateName] = instance[stateName] || new ReactiveDict()
     }
-    onCreated.call(view, cb)
+    onCreated.call(this, cb)
   }
 })(Blaze.View.prototype.onViewCreated)
 
@@ -116,7 +108,7 @@ Object.defineProperty(Template, 'getState', {
  * @param key The name of the state variable to be toggled
  * @throws Key missing error when key is undefined
  */
-Blaze.TemplateInstance.prototype.toggle = function toggle (key) {
+Blaze.TemplateInstance.prototype.toggle = function toggle(key) {
   check(key, Match.Where(isDefined))
   const currentValue = this[stateName].get(key)
   this[stateName].set(key, !currentValue)
@@ -127,7 +119,7 @@ Blaze.TemplateInstance.prototype.toggle = function toggle (key) {
  * @param key The name of the state variable to be toggled
  * @throws Key missing error when key is undefined
  */
-Template.toggle = function toggle (key) {
+Template.toggle = function toggle(key) {
   const instance = Template.instance()
   if (instance) {
     instance.toggle(key)

@@ -3,34 +3,29 @@ Package.describe({
   name: 'jkuester:template-states',
   summary: 'Template states for Blaze',
   git: 'https://github.com/gwendall/meteor-template-states.git',
-  version: '0.3.0'
+  version: '1.0.0',
 })
 
-Package.onUse(function (api, where) {
-  api.use([
-    'ecmascript',
-    'blaze@2.0.0',
-    'reactive-dict@1.0.0',
-    'templating@1.0.0'
-  ], 'client')
+Package.onUse((api) => {
+  api.versionsFrom(['3.0.1', '3.4'])
+  api.use(
+    ['ecmascript', 'blaze@3.0.0', 'reactive-dict', 'templating@1.4.4'],
+    'client',
+  )
 
-  api.addFiles([
-    'lib.js'
-  ], 'client')
+  api.addFiles(['lib.js'], 'client')
 })
 
-Package.onTest(function (api) {
+Package.onTest((api) => {
   api.use([
     'random',
     'ecmascript',
-    'practicalmeteor:chai',
-    'cultofcoders:mocha'
-  ])
-  api.use([
+    'meteortesting:mocha@3.3.0',
+    'jquery',
     'blaze',
     'reactive-dict',
     'templating',
-    'jkuester:template-states'
-  ], 'client')
-  api.mainModule('lib.tests.js', 'client')
+    'jkuester:template-states@1.0.0',
+  ])
+  api.addFiles('lib.tests.js', 'client')
 })
