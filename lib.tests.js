@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-
 import { assert } from 'chai'
 import { Blaze } from 'meteor/blaze'
 import { Random } from 'meteor/random'
