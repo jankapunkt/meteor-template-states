@@ -28,9 +28,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-
-      - run: npm install -g standard snazzy
-      - run: standard | snazzy
+      # use biome to lint-check and format-check code
+      - run: |
+          cd test-proxy
+          npm ci
+          npm run lint
 
   tests:
     name: Meteor tests
@@ -48,7 +50,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.meteor
-          key: v1-meteor-${{ hashFiles('.meteor/versions') }}
+          key: v1-meteor-${{ hashFiles('**/.meteor/versions') }}
           restore-keys: |
             v1-meteor-
 
@@ -57,7 +59,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: v1-npm-${{ hashFiles('package-lock.json') }}
+          key: v1-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             v1-npm-
 
